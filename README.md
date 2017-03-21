@@ -15,7 +15,7 @@ cd helloworld
 
 ### Now compile
 
-Invoke `mico compile`, and specify the name of your platform. For example, MiCOKit-3165 dev board:
+Invoke `make`, and specify the name of your platform. For example, MiCOKit-3165 dev board:
 
 ```
 ./make MK3165
