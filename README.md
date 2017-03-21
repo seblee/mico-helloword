@@ -1,119 +1,86 @@
-重要提示: 该版本仅提供相关人员内部测试使用，未经MXCHIP的许可严禁对外发布！
+# Getting started with Helloworld app on MiCO OS
 
-MICO
-====
+This guide reviews the steps required to get `helloworld` app working on an MiCO OS platform.
 
-Mico-controller based Internet Connectivity Operation System
+Please install [mico CLI](https://code.aliyun.com/mico/mico-cli).
 
+## Import the example application
 
-### 特性
-* 为嵌入式设备设计的物联网开发软件平台
-* 基于实时操作系统设计
-* 支持各种微控制器平台
-* 无线网络接入方案：Wi-Fi，蓝牙
-* 内置云服务接入中间件和各种示例代码
-* 优秀的低功耗控制功能
-* 为物联网产品量产设计的应用程序框架
-* 为应用开发提供的大量编程工具
+From the command-line, import the example:
 
-### 目录结构
-* demos: 基于MiCO开发的各种示例程序
-* include: MiCO核心功能接口
-* MiCO: MiCO核心库,二进制文件和相关系统代码
-* libraries: MiCO软件中间件，应用支持代码等
-* platform: 基于不同开发环境，硬件平台的特性文件
-* board: 板级定制代码
-* Projects: 基于IAR开发环境的的工程文件
-* bootloader：系统引导程序源代码
-* makefiles：micoder编译工具链文件
+```
+mico import helloworld
+cd helloworld
+```
 
-### 使用前准备
-1. 首先您需要拥有一个MiCOKit开发套件，具体信息请参考：[MiCOKit开发板简介](http://developer.mico.io/docs/34)；
-2. 安装MiCoder IDE集成开发环境，下载地址：[MiCoder IDE](http://developer.mico.io/downloads/2)；
-3. 准备一个Jlink下载调试工具(针对ST开发板，可使用Stlink)，并在PC上安装Jlink驱动软件；
-4. 连接Jlink工具到PC端，并更新驱动程序，具体方法参考：[MiCO SDK 使用](http://developer.mico.io/docs/10)页面中步骤 1；
-5. 使用USB线连接PC和MiCOKit，实现一个虚拟串口用于供电和输出调试信息, 驱动下载地址：[VCP driver](http://www.ftdichip.com/Drivers/VCP.htm)；
-6. 打开MiCoder IDE，导入当前MiCO SDK，导入方法请参考：[MiCoder IDE使用](http://developer.mico.io/docs/13)页面中的“导入其它版本SDK”；
-7. 在MiCoder IDE中make target命令框中，输入make命令，具体make命令格式请参考下节：wifi_uart串口透传实例使用。
+### Now compile
 
-### 使用示例：“wifi_uart” 串口透传
-1. 打开MiCoder IDE,导入最新MiCO SDK，具体请参考上节第6条；
-2. 打开make target命令窗口，输入make命令，编译与下载对应的应用程序；
-3. make命令格式：make [total] [download] [run | debug] [JTAG=xxx] [VERBOSE=1] (Windows下为：make，Linux和Mac OS为：./make)
-4. 以MiCOKit-3165为例：
+Invoke `mico compile`, and specify the name of your platform. For example, MiCOKit-3165 dev board:
 
-    仅编译应用程序，make命令： application.wifi_uart@MK3165
-    
-    编译bootloader和应用程序，make命令：application.wifi_uart@MK3165 total
-    
-    编译与下载bootloader和应用程序，make命令：application.wifi_uart@MK3165 total download
-    
-    编译与下载bootloader和应用程序，并重启运行，make命令：application.wifi_uart@MK3165 total download run
-    
-5. 待编译下载完成，设备重启后，即可观察 MiCOKit 开发板状态是否发生变化，即配网指示灯闪烁;
-6. 下载后，方可进入MiCoder IDE在线调试功能界面，点击界面图标 ![bug虫子](http://developer.mico.io/fileDownload/120) 下拉列表中 “MiCO” 进入在线调试参数设置界面
-7. 更详细MiCoder调试信息，请参考：[MiCoder IDE使用](http://developer.mico.io/docs/13)页面中的第5条“使用仿真器进行调试”;
-8. 更详细关于wifi_uart应用程序使用方法，请参考：[基于 wifi_uart 的 Easylink 使用说明](http://developer.mico.io/downloads/8).
+```
+./make MK3165
+```
 
+Your PC may take a few minutes to compile your code. At the end, you see the following result:
 
+```
+[snip]
+                        MICO MEMORY MAP                            
+|=================================================================|
+| MODULE                                   | ROM       | RAM      |
+|=================================================================|
+| App_Helloworld                           | 141       | 0        |
+| Board_MK3165                             | 1308      | 124      |
+| crt0_GCC                                 | 272       | 0        |
+| FreeRTOS                                 | 5832      | 424      |
+| hardfault_handler                        | 991       | 0        |
+| libc                                     | 38059     | 2268     |
+| libgcc                                   | 3360      | 0        |
+[snip]
+| STM32F4xx                                | 5115      | 2215     |
+| STM32F4xx_Peripheral_Drivers             | 9299      | 236      |
+| STM32F4xx_Peripheral_Libraries           | 5948      | 16       |
+| *fill*                                   | 253       | 926      |
+|=================================================================|
+| TOTAL (bytes)                            | 243524    | 34971    |
+|=================================================================|
+Build complete
+Making .gdbinit
+Making .openocd_cfg
+```
 
+### Program your board
 
-Notice: Internal use only
+1. Connect your MiCO device to the computer over USB.
+1. Connect your MiCO device's JTAG port to the computer over JTAG debugger (Jlink, stlink, CMSIS-DAP etc.)
+1. From the command-line, run the following command:
 
+```
+./make MK3165 download run JTAG=jlink_swd
+```
+After `helloworld` app is downloaded and run, the LED on your platform turns on and off.
 
-MICO
-====
-Mico-controller based Internet Connectivity Operation System
+## Program, Compile and Debug your application using MiCoder IDE
+Use **MiCoder IDE** to import `helloworld` app and debug:
 
+1. Start MiCoder IDE.
+1. Import `helloworld` application to MiCoder IDE. (From the File > Import, select General > Existing Projects into Workspace)
+1. Change current debug project to `helloworld` (From the Debug Configurations > GDB Hardware Debugging > MiCO, change Project to `helloworld` ), and apply
+1. Set breakpoints, and start a debug session.
 
-### Features
-* Software development platform designed for embedded devices
-* Based on a real time operation system
-* Support abundant MCUs
-* Wi-Fi, bluetooth connectivity total solution
-* Build-in protocols for cloud service
-* State-of-the-art low power management
-* Application framework for I.O.T product
-* Rich tools and mobile APP to accelerate development
+![Image of MiCoder IDE's Debug Configurations](img/debug_conf.png)
+![Image of MiCoder IDE's Debug UI](img/debug_ui.png)
 
-### Contents:
-* Demos: Demos applications and application framework.
-* include: MiCO core APIs.
-* mico: MiCO core libraries, binary file and system codes.
-* libraries: MiCO middleware, support functions.
-* platform: codes based in different IDE and hardware.
-* board: BSP file, Hardware resources and configurations on different boards.
-* Projects: IAR workbench projects.
-* libraries: Open source software libraries.
-* bootloader：System boot code.
-* makefiles：MiCoder compile toolchain files.
+## Troubleshooting
 
-### Preparations:
-1. You should have a development board [MiCOKit-xxx](http://developer.mico.io/docs/34)
-2. Install MiCoder IDE and download address: [MiCoder IDE] (http://developer.mico.io/downloads/2);
-3. Prepare a Jlink tool (for ST develpment board，use STlink)，and install its driver；
-4. Connect Jlink to PC, and update its driver following step 1 in http://developer.mico.io/docs/10；
-5. Connect USB cable to PC to have a virtual serial port, install [VCP driver](http://www.ftdichip.com/Drivers/VCP.htm)；
-6. Open MiCoder IDE and import the current MiCO SDK, please refer to: [MiCoder IDE use] (http://developer.mico.io/docs/13) page"; 
-7. Open the“make target” window in MiCoder IDE，and input make command，specific format please refer to the following section: wifi_uart example use.
+1. Make sure `mico-cli` is working correctly and its version is `>1.0.0`
 
-### Example "wifi_uart" serial transmission  usage
-1. Open MiCoder IDE and import the latest MiCO SDK; specific method refer to the 6 step of“Preparation;
-2. Open the make target command window, and edit the make command, compile and download the corresponding application;
-3. Format of command： make [total] [download] [run command format: | debug] [JTAG=xxx] [VERBOSE=1] (Windows: make, Linux and Mac OS:./make);
-4. Take MiCOKit-3165 as example, in the MiCoder IDE target command window input:
+ ```
+ mico --version
+ ```
 
-    1) Compile applications only, make command:    application.wifi_uart@MK3165;
-    
-    2) Compile bootloader and applications, make command:    application.wifi_uart@MK3165 total
-    
-    3) Compile and download bootloader and applications, make command:   application.wifi_uart@MK3165 total download
-    
-    4) Compile and download bootloader and applications, and restart run, make command:   application.wifi_uart@MK3165 total download run;
-    
-5. After compile，download, and restart, you can observe the status of MiCOKit development board is changed, that is, the distribution network flashing lights;
-6. After download, you can enter the MiCoder IDE online debugging interface, click the icon ![bug bugs] (http://developer.mico.io/fileDownload/120) and drop-down list 
-"MiCO" to enter debugging interface;
-7. More detail about MiCoder IDE online debugging information, please refer to: [MiCoder IDE use] (http://developer.mico.io/docs/13) page, the step 5 about using the 
-debugger for debugging".
-8. More detail about the wifi_uart application usage, please refer to: [Usage of Easylink based on wifi_uart ] (http://developer.mico.io/downloads/8).
+ If not, you can update it:
+
+ ```
+ pip install mico-cli --upgrade
+ ```
