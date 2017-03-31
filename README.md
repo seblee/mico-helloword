@@ -15,10 +15,10 @@ cd helloworld
 
 ### Now compile
 
-Invoke `make`, and specify the name of your platform. For example, MiCOKit-3165 dev board:
+Invoke `mico make`, and specify the name of your platform and application. For example, MiCOKit-3165 dev board:
 
 ```
-./make MK3165
+mico make helloworld@MK3165
 ```
 
 Your PC may take a few minutes to compile your code. At the end, you see the following result:
@@ -56,9 +56,13 @@ Making .openocd_cfg
 1. From the command-line, run the following command:
 
 ```
-./make MK3165 download run JTAG=jlink_swd
+mico make MK3165 download run JTAG=jlink_swd
 ```
 After `helloworld` app is downloaded and run, the LED on your platform turns on and off.
+
+<span class="tips">**Note:** If you download app first time, use command option `total` to download all neccessory images. For example `mico make MK3165 total download run JTAG=jlink_swd`  。</span>
+
+
 
 ## Program, Compile and Debug your application using MiCoder IDE
 Use **MiCoder IDE** to import `helloworld` app and debug:
