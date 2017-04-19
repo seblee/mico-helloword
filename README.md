@@ -86,5 +86,5 @@ Use **MiCoder IDE** to import `helloworld` app and debug:
  If not, you can update it:
 
  ```
- pip install mico-cli --upgrade
+ pip install mico-cube --upgrade
  ```
