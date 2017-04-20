@@ -2,7 +2,7 @@
 
 This guide reviews the steps required to get `helloworld` app working on an MiCO OS platform.
 
-Please install [mico CLI](https://code.aliyun.com/mico/mico-cli).
+Please install [mico-cube](https://code.aliyun.com/mico/mico-cube).
 
 ## Import the example application
 
@@ -56,11 +56,11 @@ Making .openocd_cfg
 1. From the command-line, run the following command:
 
 ```
-mico make MK3165 download run JTAG=jlink_swd
+mico make helloworld@MK3165 download run JTAG=jlink_swd
 ```
 After `helloworld` app is downloaded and run, the LED on your platform turns on and off.
 
-<span class="tips">**Note:** If you download app first time, use command option `total` to download all neccessory images. For example `mico make MK3165 total download run JTAG=jlink_swd`  。</span>
+<span class="tips">**Note:** If you download app first time, use command option `total` to download all neccessory images. For example `mico make helloworld@MK3165 total download run JTAG=jlink_swd`.</span>
 
 
 
@@ -77,7 +77,7 @@ Use **MiCoder IDE** to import `helloworld` app and debug:
 
 ## Troubleshooting
 
-1. Make sure `mico-cli` is working correctly and its version is `>1.0.0`
+1. Make sure `mico-cube` is working correctly and its version is `>1.0.4`
 
  ```
  mico --version
@@ -86,5 +86,5 @@ Use **MiCoder IDE** to import `helloworld` app and debug:
  If not, you can update it:
 
  ```
- pip install mico-cli --upgrade
+ mico upgrade
  ```
